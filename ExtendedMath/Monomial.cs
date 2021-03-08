@@ -18,7 +18,7 @@ namespace ExtendedMath
         /// <summary>
         /// Буквенные множители.
         /// </summary>
-        public string LetterMultipliers { get; private set; }
+        public string LetterMultipliers { get; private set; } = "";
 
         /// <summary>
         /// Степень округления.
@@ -32,7 +32,13 @@ namespace ExtendedMath
 
         public Monomial(double monomial)
         {
+            Coefficient = monomial;
+        }
 
+        private Monomial(double coefficient, string letterMultipliers)
+        {
+            Coefficient = coefficient;
+            LetterMultipliers = letterMultipliers;
         }
 
         /// <summary>
@@ -69,6 +75,8 @@ namespace ExtendedMath
         {
             var degree = 0;
 
+            var sDegree = "";
+
             var j = index + 1;
 
             //Получаем степень.
@@ -76,8 +84,10 @@ namespace ExtendedMath
             {
                 if (!char.IsDigit(monomial[j])) break; // Если цифры закончились выходим.
 
-                degree += Convert.ToInt32(monomial[j].ToString()) - 1;
+                sDegree += monomial[j].ToString();
             }
+
+            degree = Convert.ToInt32(sDegree) - 1;
 
             // Если предыдущий символ буква.
             if (char.IsLetter(monomial[index - 1]))
@@ -119,6 +129,28 @@ namespace ExtendedMath
             }
 
             index = j - 1;
+        }
+
+        /// <summary>
+        /// Метод получающий степень.
+        /// </summary>
+        private static int GetDegree(string monomial, int index)
+        {
+            var sDegree = "";
+
+            var j = index + 1;
+
+            //Получаем степень.
+            for (; j < monomial.Length; j++)
+            {
+                if (!char.IsDigit(monomial[j])) break; // Если цифры закончились выходим.
+
+                sDegree += monomial[j].ToString();
+            }
+
+            index = j;
+
+            return Convert.ToInt32(sDegree) - 1;
         }
 
         /// <summary>
@@ -193,7 +225,35 @@ namespace ExtendedMath
         }
 
         /// <summary>
-        /// Перевод из формата dddad в ad^4.
+        /// Перевод из формата d^4 в dddd.
+        /// </summary>
+        private static string ReverseDegreeFormat(string monomial)
+        {
+            var result = "";
+
+            var degree = 0;
+
+            for (int i = 0; i < monomial.Length; i++)
+            {
+                // Является ли символ возведением в степень.
+                if (monomial[i] == '^')
+                {
+                    degree = GetDegree(monomial, i);
+
+                    result += new String(monomial[i - 1], degree);
+                }
+                // Является ли символ буквой.
+                else if (char.IsLetter(monomial[i]))
+                {
+                    result += monomial[i];
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Перевод из формата dddd в d^4.
         /// </summary>
         private void DegreeFormat()
         {
@@ -216,9 +276,115 @@ namespace ExtendedMath
             LetterMultipliers = newLetterMultipliers;
         }
 
+        /// <summary>
+        /// Перевод из формата dddd в d^4.
+        /// </summary>
+        private static string DegreeFormat(string monomial)
+        {
+            var newLetterMultipliers = "";
+
+            foreach (var letter in monomial.Distinct().ToArray())
+            {
+                var count = monomial.Count(chr => chr == letter);
+
+                if (count > 1)
+                {
+                    newLetterMultipliers += string.Format("{0}^{1}", letter, count);
+                }
+                else
+                {
+                    newLetterMultipliers += letter;
+                }
+            }
+
+           return newLetterMultipliers;
+        }
+
+        #region Операторы.
+
+        /// <summary>
+        /// Метод проверяющий подобные одночлены млм нет.
+        /// </summary>
+        private static bool IsSimilar(Monomial monomial1, Monomial monomial2)
+        {
+            if (monomial1.LetterMultipliers == monomial2.LetterMultipliers)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static Monomial operator *(Monomial m1, Monomial m2)
+        {
+            var result = new Monomial(Math.Round(m1.Coefficient * m2.Coefficient, 4), "");
+
+            result.LetterMultipliers += ReverseDegreeFormat(m1.LetterMultipliers);
+            result.LetterMultipliers += ReverseDegreeFormat(m2.LetterMultipliers);
+
+            result.LetterMultipliers = DegreeFormat(result.LetterMultipliers);
+
+            return result;
+        }
+
+        public static Monomial operator -(Monomial m1, Monomial m2)
+        {
+            if (!IsSimilar(m1, m2))
+            {
+                throw new Exception("Можно вычитать только подобные одночлены.");
+            }
+
+            var result = new Monomial(Math.Round(m1.Coefficient - m2.Coefficient, 4), m1.LetterMultipliers);
+
+            if (result.Coefficient == 0)
+            {
+                result.LetterMultipliers = "";
+            }
+
+            return result;
+        }
+
+        public static Monomial operator +(Monomial m1, Monomial m2)
+        {
+            if (!IsSimilar(m1, m2))
+            {
+                throw new Exception("Можно складывать только подобные одночлены.");
+            }
+
+            var result = new Monomial(Math.Round(m1.Coefficient + m2.Coefficient, 4), m1.LetterMultipliers);
+
+            if (result.Coefficient == 0)
+            {
+                result.LetterMultipliers = "";
+            }
+
+            return result;
+        }
+
+        #endregion
+
         public override string ToString()
         {
-            return string.Format("{0}{1}", Math.Round(Coefficient, 3), LetterMultipliers);
+            var result = "";
+
+            if (Coefficient == 1)
+            {
+                result = string.Format("{0}", LetterMultipliers);
+            }
+            else if (Coefficient == -1)
+            {
+                result = string.Format("-{0}", LetterMultipliers);
+            }
+            else if (LetterMultipliers == string.Empty)
+            {
+                result = string.Format("{0}", Math.Round(Coefficient, 3));
+            }
+            else
+            {
+                result = string.Format("{0}{1}", Math.Round(Coefficient, 3), LetterMultipliers);
+            }
+
+            return result;
         }
     }
 }

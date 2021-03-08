@@ -10,6 +10,10 @@ namespace Test
         public static void Main()
         {
             BringingToStandardViewTest();
+
+            Console.WriteLine();
+
+            OperatorsTest();
         }
 
         public static void BringingToStandardViewTest()
@@ -30,6 +34,12 @@ namespace Test
 
             Monomial monomial8 = new Monomial("(a^2b)^3(5ab)^2"); // => 25a^8b^5
 
+            Monomial monomial9 = new Monomial("2b^3(-3)cb"); // => -6b^4c
+
+            Monomial monomial10 = new Monomial("x^26"); // => x^26
+
+            Monomial monomial11 = new Monomial(17); // => 17
+
             Console.WriteLine(monomial);
 
             Console.WriteLine(monomial2);
@@ -45,6 +55,74 @@ namespace Test
             Console.WriteLine(monomial7);
 
             Console.WriteLine(monomial8);
+
+            Console.WriteLine(monomial9);
+
+            Console.WriteLine(monomial10);
+
+            Console.WriteLine(monomial11);
+
+
+            
+        }
+
+        public static void OperatorsTest()
+        {
+            Monomial monomial1 = new Monomial("2ab");
+            Monomial monomial2 = new Monomial("-3ab");
+
+            Monomial monomial3 = new Monomial("8xy");
+            Monomial monomial4 = new Monomial("10xy");
+            Monomial monomial5 = new Monomial("2xy");
+
+            Monomial monomial6 = new Monomial("-73x^2z");
+            Monomial monomial7 = new Monomial("73x^2z");
+
+            Monomial monomial8 = new Monomial("7x2y");
+            Monomial monomial9 = new Monomial("2x2y");
+
+            Monomial monomial10 = new Monomial("2a^3");
+            Monomial monomial11 = new Monomial("3a^3");
+            Monomial monomial12 = new Monomial("a^3");
+
+            Monomial monomial13 = new Monomial("5t");
+            Monomial monomial14 = new Monomial("6t");
+
+            Monomial monomial15 = new Monomial("2t^2");
+            Monomial monomial16 = new Monomial("7t^3");
+
+            Monomial monomial17 = new Monomial("-5t");
+            Monomial monomial18 = new Monomial("5t^3x");
+
+            Monomial monomial19 = new Monomial($"{1.0/3.0}ab^2");
+            Monomial monomial20 = new Monomial("3a^3b");
+
+            Monomial monomial21 = new Monomial($"{1.0 / 3.0}ab^2");
+            Monomial monomial22 = new Monomial("3a^30b");
+
+
+            Console.WriteLine(monomial1 + monomial2); // => -ab
+
+            Console.WriteLine(monomial1 - monomial2); // => 5ab
+
+            Console.WriteLine(monomial3 - monomial4 + monomial5); // => 0
+
+            Console.WriteLine(monomial6 + monomial7); // => 0
+
+            Console.WriteLine(monomial8 - monomial9); // => 10xy
+
+            Console.WriteLine(monomial10 + monomial11 - monomial12); // => 4a^3
+
+            Console.WriteLine(monomial13 - monomial14); // => -t
+
+            Console.WriteLine(monomial15 * monomial16); // => 14t^5
+
+            Console.WriteLine(monomial17 * monomial18); // => -25t^4x
+
+            Console.WriteLine(monomial19 * monomial20); // => a^4b^3
+
+            Console.WriteLine(monomial21 * monomial22); // => a^31b^3
+
         }
 
     }
