@@ -2,7 +2,8 @@
 
 namespace ExtendedMath
 {
-    public class MathB
+    public static class MathB
     {
+
     }
 }
