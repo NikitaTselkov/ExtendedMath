@@ -23,7 +23,7 @@ namespace Test.Tests
 
             Monomial monomial3 = new Monomial("10a^2b^2(-1,2a^3b^3)"); // => -12a^5b^5
 
-            Monomial monomial4 = new Monomial("4ac^2*0,5a^3c"); // => 2a^4c^3
+            Monomial monomial4 = new Monomial("4c^2a*0,5a^3c"); // => 2a^4c^3
 
             Monomial monomial5 = new Monomial($"{2.0 / 3.0}a12ab^2"); // => 8a^2b^2
 
@@ -93,6 +93,22 @@ namespace Test.Tests
             Monomial monomial21 = new Monomial($"{1.0 / 3.0}ab^2");
             Monomial monomial22 = new Monomial("3a^30b");
 
+            Monomial monomial23 = new Monomial("14a^5");
+            Monomial monomial24 = new Monomial("7a^2");
+
+            Monomial monomial25 = new Monomial("-12pq");
+            Monomial monomial26 = new Monomial("4q");
+
+            Monomial monomial27 = new Monomial("-42m^6");
+            Monomial monomial28 = new Monomial("-6m");
+
+            Monomial monomial29 = new Monomial("b^5");
+            Monomial monomial30 = new Monomial("b^2");
+
+            Monomial monomial31 = new Monomial($"{1.0 / 3.0}m^3n^2p^2");
+            Monomial monomial32 = new Monomial($"-{2.0 / 3.0}m^2n^2p^2");
+
+
             // assert 
 
             Assert.AreEqual("-ab", (monomial1 + monomial2).ToString()); // => -ab
@@ -116,6 +132,16 @@ namespace Test.Tests
             Assert.AreEqual("a^4b^3", (monomial19 * monomial20).ToString()); // => a^4b^3
 
             Assert.AreEqual("a^31b^3", (monomial21 * monomial22).ToString()); // => a^31b^3
+
+            Assert.AreEqual("2a^3", (monomial23 / monomial24).ToString()); // => 2a^3
+
+            Assert.AreEqual("-3p", (monomial25 / monomial26).ToString()); // => -3p
+
+            Assert.AreEqual("7m^5", (monomial27 / monomial28).ToString()); // => 7m^5
+
+            Assert.AreEqual("b^3", (monomial29 / monomial30).ToString()); // => b^3
+
+            Assert.AreEqual("-0,5m", (monomial31 / monomial32).ToString()); // => -0,5m
         }
     }
 }

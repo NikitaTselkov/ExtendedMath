@@ -24,7 +24,7 @@ namespace Test
 
             Monomial monomial3 = new Monomial("10a^2b^2(-1,2a^3b^3)"); // => -12a^5b^5
 
-            Monomial monomial4 = new Monomial("4ac^2*0,5a^3c"); // => 2a^4c^3
+            Monomial monomial4 = new Monomial("4c^2a*0,5a^3c"); // => 2a^4c^3
 
             Monomial monomial5 = new Monomial($"{2.0 / 3.0}a12ab^2"); // => 8a^2b^2
 
@@ -60,10 +60,7 @@ namespace Test
 
             Console.WriteLine(monomial10);
 
-            Console.WriteLine(monomial11);
-
-
-            
+            Console.WriteLine(monomial11); 
         }
 
         public static void OperatorsTest()
@@ -100,6 +97,21 @@ namespace Test
             Monomial monomial21 = new Monomial($"{1.0 / 3.0}ab^2");
             Monomial monomial22 = new Monomial("3a^30b");
 
+            Monomial monomial23 = new Monomial("14a^5");
+            Monomial monomial24 = new Monomial("7a^2");
+
+            Monomial monomial25 = new Monomial("-12pq");
+            Monomial monomial26 = new Monomial("4q");
+
+            Monomial monomial27 = new Monomial("-42m^6");
+            Monomial monomial28 = new Monomial("-6m");
+
+            Monomial monomial29 = new Monomial("b^5");
+            Monomial monomial30 = new Monomial("b^2");
+
+            Monomial monomial31 = new Monomial($"{1.0 / 3.0}m^3n^2p^2");
+            Monomial monomial32 = new Monomial($"-{2.0 / 3.0}m^2n^2p^2");
+
 
             Console.WriteLine(monomial1 + monomial2); // => -ab
 
@@ -122,6 +134,16 @@ namespace Test
             Console.WriteLine(monomial19 * monomial20); // => a^4b^3
 
             Console.WriteLine(monomial21 * monomial22); // => a^31b^3
+
+            Console.WriteLine(monomial23 / monomial24); // => 2a^3
+
+            Console.WriteLine(monomial25 / monomial26); // => -3p
+
+            Console.WriteLine(monomial27 / monomial28); // => 7m^5
+
+            Console.WriteLine(monomial29 / monomial30); // => b^3
+
+            Console.WriteLine(monomial31 / monomial32); // => -0,5m
 
         }
 

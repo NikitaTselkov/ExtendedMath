@@ -65,6 +65,9 @@ namespace ExtendedMath
                 }
             }
 
+            // Сортировка символов в алфавитном проядке.
+            LetterMultipliers = string.Join("", LetterMultipliers.ToCharArray().OrderBy(x => x));
+
             DegreeFormat();
         }
 
@@ -300,8 +303,6 @@ namespace ExtendedMath
            return newLetterMultipliers;
         }
 
-        #region Операторы.
-
         /// <summary>
         /// Метод проверяющий подобные одночлены млм нет.
         /// </summary>
@@ -315,9 +316,37 @@ namespace ExtendedMath
             return false;
         }
 
+        #region Операторы.
+
+        public static Monomial operator /(Monomial m1, Monomial m2)
+        {
+            var result = new Monomial(Math.Round(m1.Coefficient / m2.Coefficient, 4));
+
+            var monomial1 = ReverseDegreeFormat(m1.LetterMultipliers);
+            var monomial2 = ReverseDegreeFormat(m2.LetterMultipliers);
+
+            foreach (var item in monomial1)
+            {
+                if (monomial2.Any(a => a == item))
+                {
+                    var currentLetter = monomial2.IndexOf(item);
+
+                    monomial2 = monomial2.Remove(currentLetter, 1);
+                }
+                else
+                {
+                    result.LetterMultipliers += item;
+                }
+            }
+
+            result.LetterMultipliers = DegreeFormat(result.LetterMultipliers);
+
+            return result;
+        }
+
         public static Monomial operator *(Monomial m1, Monomial m2)
         {
-            var result = new Monomial(Math.Round(m1.Coefficient * m2.Coefficient, 4), "");
+            var result = new Monomial(Math.Round(m1.Coefficient * m2.Coefficient, 4));
 
             result.LetterMultipliers += ReverseDegreeFormat(m1.LetterMultipliers);
             result.LetterMultipliers += ReverseDegreeFormat(m2.LetterMultipliers);
@@ -365,8 +394,7 @@ namespace ExtendedMath
 
         public override string ToString()
         {
-            var result = "";
-
+            string result;
             if (Coefficient == 1)
             {
                 result = string.Format("{0}", LetterMultipliers);
