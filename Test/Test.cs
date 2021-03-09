@@ -40,6 +40,9 @@ namespace Test
 
             Monomial monomial11 = new Monomial(17); // => 17
 
+            Monomial monomial12 = new Monomial("((3x)^3)^2"); // => 729x^6
+
+
             Console.WriteLine(monomial);
 
             Console.WriteLine(monomial2);
@@ -61,6 +64,8 @@ namespace Test
             Console.WriteLine(monomial10);
 
             Console.WriteLine(monomial11); 
+
+            Console.WriteLine(monomial12); 
         }
 
         public static void OperatorsTest()

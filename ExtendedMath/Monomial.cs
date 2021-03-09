@@ -106,16 +106,16 @@ namespace ExtendedMath
                 for (int i = 0; i < degree; i++)
                 {
                     for (int k = 0; k < value.Length; k++)
-                    {
-                        // Является ли символ цифрой.
-                        if (char.IsDigit(value[k]) || value[k] == '-')
-                        {
-                            Coefficient *= Math.Round(NumHandler(value, ref k), DegreeOfRounding);
-                        }
+                    {                  
                         // Является ли символ возведением в степень.
-                        else if (value[k] == '^')
+                        if (value[k] == '^')
                         {
                             DegreeHandler(value, ref k);
+                        }
+                        // Является ли символ цифрой.
+                        else if (char.IsDigit(value[k]) || value[k] == '-')
+                        {
+                            Coefficient *= Math.Round(NumHandler(value, ref k), DegreeOfRounding);
                         }
                         // Является ли символ буквой.
                         else if (char.IsLetter(value[k]))
@@ -198,9 +198,9 @@ namespace ExtendedMath
 
             for (int i = endIndex - 1; i > 0; i--)
             {
-                if (line[i] =='(') break;
-
                 result += line[i];
+
+                if (line[i] == '(') break;
             }
 
             // Разворачивает строку.

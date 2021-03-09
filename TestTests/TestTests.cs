@@ -39,6 +39,8 @@ namespace Test.Tests
 
             Monomial monomial11 = new Monomial(17); // => 17
 
+            Monomial monomial12 = new Monomial("((3x)^3)^2"); // => 729x^6
+
             // assert  
 
             Assert.AreEqual("5y^4", monomial.ToString());
@@ -52,6 +54,7 @@ namespace Test.Tests
             Assert.AreEqual("-6b^4c", monomial9.ToString());
             Assert.AreEqual("x^26", monomial10.LetterMultipliers);
             Assert.AreEqual(17, monomial11.Coefficient);
+            Assert.AreEqual("729x^6", monomial12.ToString());
         }
 
         [TestMethod()]
