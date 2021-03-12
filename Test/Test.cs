@@ -9,14 +9,22 @@ namespace Test
     {
         public static void Main()
         {
-            BringingToStandardViewTest();
+            Console.WriteLine("\n Monomial \n");
+
+            BringingMonomialToStandardViewTest();
 
             Console.WriteLine();
 
-            OperatorsTest();
+            MonomialOperatorsTest();
+
+            Console.WriteLine("\n Polynomial \n");
+
+            BringingPolynomialToStandardViewTest();
         }
 
-        public static void BringingToStandardViewTest()
+        #region Monomial
+
+        public static void BringingMonomialToStandardViewTest()
         {
             Monomial monomial = new Monomial("5yy^2y"); // => 5y^4
 
@@ -42,6 +50,8 @@ namespace Test
 
             Monomial monomial12 = new Monomial("((3x)^3)^2"); // => 729x^6
 
+            Monomial monomial13 = new Monomial("(0,5x^2m^4)^3"); // => 0,125x^6m^12
+
 
             Console.WriteLine(monomial);
 
@@ -66,9 +76,11 @@ namespace Test
             Console.WriteLine(monomial11); 
 
             Console.WriteLine(monomial12); 
+
+            Console.WriteLine(monomial13); 
         }
 
-        public static void OperatorsTest()
+        public static void MonomialOperatorsTest()
         {
             Monomial monomial1 = new Monomial("2ab");
             Monomial monomial2 = new Monomial("-3ab");
@@ -151,6 +163,73 @@ namespace Test
             Console.WriteLine(monomial31 / monomial32); // => -0,5m
 
         }
+
+        #endregion
+
+        #region Polynomial
+
+        public static void BringingPolynomialToStandardViewTest()
+        {
+            Polynomial polynomial1 = new Polynomial("a + 2b^2 - c"); // => a + 2b^2 - c
+
+            Polynomial polynomial2 = new Polynomial("3t^5 - 4b"); // => 3t^5 - 4b
+
+            Polynomial polynomial3 = new Polynomial("4 - 6xy"); // => 4 - 6xy
+
+            Polynomial polynomial4 = new Polynomial("3ab + 2 * 3c^2 + 2ab - 8cc + xy"); // => 5ab - 2c^2 + xy
+
+            Polynomial polynomial5 = new Polynomial("5a - 7b - (7a - 5b)"); // => -2a - 2b
+
+            Polynomial polynomial6 = new Polynomial("7x + 2,9(5 - (3x + y))"); // => - 1,7 x + 14,5 -2,9 y
+
+            Polynomial polynomial7 = new Polynomial("-2,9f(5 - 7 + 1f)"); // => 5,8 f - 2,9 f^2
+
+            Polynomial polynomial8 = new Polynomial("2,9(5 - 7 + 1f)"); // => - 5,8 + 2,9f 
+
+            Polynomial polynomial9 = new Polynomial("x(5 - 7 + 1y)"); // => - 2x + xy 
+
+            Polynomial polynomial10 = new Polynomial("-x(-5 - 7 + 1y)"); // => 12x - xy
+
+            Polynomial polynomial11 = new Polynomial("5a - 7b + (7a - 5b)"); // => 12a - 12b
+
+            Polynomial polynomial12 = new Polynomial("(9x^2 - x)(-5 - 7 + 1y)"); // => -108x^2 + 9x^2y + 12x - xy 
+
+            Polynomial polynomial13 = new Polynomial("(-6x(9x^2 - x))(-5 - 7 + 1y)"); // => 648x^3 -54x^3y - 72x^2 + 6x^2y 
+
+            Polynomial polynomial14 = new Polynomial("(-6x(-(9x^2 + 1) - x))(-5 - (7 + 1y))"); // => -648x^3 - 54x^3y - 72x - 6xy - 72x^2 - 6x^2y 
+
+
+
+            Console.WriteLine(polynomial1);
+
+            Console.WriteLine(polynomial2);
+
+            Console.WriteLine(polynomial3);
+
+            Console.WriteLine(polynomial4);
+
+            Console.WriteLine(polynomial5);
+
+            Console.WriteLine(polynomial6);
+
+            Console.WriteLine(polynomial7);
+
+            Console.WriteLine(polynomial8);
+
+            Console.WriteLine(polynomial9);
+
+            Console.WriteLine(polynomial10);
+
+            Console.WriteLine(polynomial11);
+
+            Console.WriteLine(polynomial12);
+
+            Console.WriteLine(polynomial13);
+
+            Console.WriteLine(polynomial14);
+        }
+
+        #endregion
 
     }
 }

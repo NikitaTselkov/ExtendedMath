@@ -11,7 +11,7 @@ namespace Test.Tests
     public class TestTests
     {
         [TestMethod()]
-        public void BringingToStandardViewTest()
+        public void BringingMonomialToStandardViewTest()
         {
             // arrange 
 
@@ -41,6 +41,8 @@ namespace Test.Tests
 
             Monomial monomial12 = new Monomial("((3x)^3)^2"); // => 729x^6
 
+            Monomial monomial13 = new Monomial("(0,5x^2m^4)^3"); // => 0,125m^12x^6
+
             // assert  
 
             Assert.AreEqual("5y^4", monomial.ToString());
@@ -55,10 +57,11 @@ namespace Test.Tests
             Assert.AreEqual("x^26", monomial10.LetterMultipliers);
             Assert.AreEqual(17, monomial11.Coefficient);
             Assert.AreEqual("729x^6", monomial12.ToString());
+            Assert.AreEqual("0,125m^12x^6", monomial13.ToString());
         }
 
         [TestMethod()]
-        public void OperatorsTestTest()
+        public void MonomialOperatorsTestTest()
         {
             // arrange 
 
@@ -145,6 +148,74 @@ namespace Test.Tests
             Assert.AreEqual("b^3", (monomial29 / monomial30).ToString()); // => b^3
 
             Assert.AreEqual("-0,5m", (monomial31 / monomial32).ToString()); // => -0,5m
+        }
+
+        [TestMethod()]
+        public void BringingPolynomialToStandardViewTestTest()
+        {
+            // arrange 
+
+            // act
+
+            Polynomial polynomial1 = new Polynomial("a + 2b^2 - c"); // => a + 2b^2 - c
+
+            Polynomial polynomial2 = new Polynomial("3t^5 - 4b"); // => 3t^5 - 4b
+
+            Polynomial polynomial3 = new Polynomial("4 - 6xy"); // => 4 - 6xy
+
+            Polynomial polynomial4 = new Polynomial("3ab + 2 * 3c^2 + 2ab - 8cc + xy"); // => 5ab - 2c^2 + xy
+
+            Polynomial polynomial5 = new Polynomial("5a - 7b - (7a - 5b)"); // => -2a - 2b
+
+            Polynomial polynomial6 = new Polynomial("7x + 2,9(5 - (3x + y))"); // => - 1,7x + 14,5 -2,9y
+
+            Polynomial polynomial7 = new Polynomial("-2,9f(5 - 7 + 1f)"); // => 5,8 f - 2,9 f^2
+
+            Polynomial polynomial8 = new Polynomial("2,9(5 - 7 + 1f)"); // => - 5,8 + 2,9f 
+
+            Polynomial polynomial9 = new Polynomial("x(5 - 7 + 1y)"); // => - 2x + xy 
+
+            Polynomial polynomial10 = new Polynomial("-x(-5 - 7 + 1y)"); // => 12x - xy
+
+            Polynomial polynomial11 = new Polynomial("5a - 7b + (7a - 5b)"); // => 12a - 12b
+
+            Polynomial polynomial12 = new Polynomial("(9x^2 - x)(-5 - 7 + 1y)"); // => -108x^2 + 9x^2y + 12x - xy 
+
+            Polynomial polynomial13 = new Polynomial("(-6x(9x^2 - x))(-5 - 7 + 1y)"); // => 648x^3 -54x^3y - 72x^2 + 6x^2y 
+
+            Polynomial polynomial14 = new Polynomial("(-6x(-(9x^2 + 1) - x))(-5 - (7 + 1y))"); // => -648x^3 - 54x^3y - 72x - 6xy - 72x^2 - 6x^2y 
+
+
+            // assert 
+
+            Assert.AreEqual("a+2b^2-c", polynomial1.ToString());
+
+            Assert.AreEqual("3t^5-4b", polynomial2.ToString());
+
+            Assert.AreEqual("4-6xy", polynomial3.ToString());
+
+            Assert.AreEqual("5ab-2c^2+xy", polynomial4.ToString());
+
+            Assert.AreEqual("-2a-2b", polynomial5.ToString());
+
+            Assert.AreEqual("-1,7x+14,5-2,9y", polynomial6.ToString());
+
+            Assert.AreEqual("5,8f-2,9f^2", polynomial7.ToString());
+
+            Assert.AreEqual("-5,8+2,9f", polynomial8.ToString());
+
+            Assert.AreEqual("-2x+xy", polynomial9.ToString());
+
+            Assert.AreEqual("12x-xy", polynomial10.ToString());
+
+            Assert.AreEqual("12a-12b", polynomial11.ToString());
+
+            Assert.AreEqual("-108x^2+9x^2y+12x-xy", polynomial12.ToString());
+
+            Assert.AreEqual("648x^3-54x^3y-72x^2+6x^2y", polynomial13.ToString());
+
+            Assert.AreEqual("-648x^3-54x^3y-72x-6xy-72x^2-6x^2y", polynomial14.ToString());
+
         }
     }
 }

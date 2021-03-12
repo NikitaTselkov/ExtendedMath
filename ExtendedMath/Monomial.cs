@@ -76,7 +76,7 @@ namespace ExtendedMath
         /// </summary>
         private void DegreeHandler(string monomial, ref int index)
         {
-            var degree = 0;
+            int degree;
 
             var sDegree = "";
 
@@ -135,6 +135,27 @@ namespace ExtendedMath
         }
 
         /// <summary>
+        /// Метод получающий выражение из скобок.
+        /// </summary>
+        /// <returns> Выражение из скобок. </returns>
+        private string GetValueInParentheses(string line, int endIndex)
+        {
+            var result = "";
+
+            for (int i = endIndex - 1; i > 0; i--)
+            {
+                result += line[i];
+
+                if (line[i] == '(') break;
+            }
+
+            // Разворачивает строку.
+            result = new string(result.Reverse().ToArray());
+
+            return result;
+        }
+
+        /// <summary>
         /// Метод получающий степень.
         /// </summary>
         private static int GetDegree(string monomial, int index)
@@ -186,27 +207,6 @@ namespace ExtendedMath
             {
                 return Convert.ToDouble(monomial[index].ToString());
             }
-        }
-
-        /// <summary>
-        /// Метод получающий выражение из скобок.
-        /// </summary>
-        /// <returns> Выражение из скобок. </returns>
-        private string GetValueInParentheses(string line, int endIndex)
-        {
-            var result = "";
-
-            for (int i = endIndex - 1; i > 0; i--)
-            {
-                result += line[i];
-
-                if (line[i] == '(') break;
-            }
-
-            // Разворачивает строку.
-            result = new string(result.Reverse().ToArray());
-
-            return result;
         }
 
         /// <summary>
@@ -304,13 +304,32 @@ namespace ExtendedMath
         }
 
         /// <summary>
-        /// Метод проверяющий подобные одночлены млм нет.
+        /// Метод проверяющий подобные одночлены или нет.
         /// </summary>
         private static bool IsSimilar(Monomial monomial1, Monomial monomial2)
         {
-            if (monomial1.LetterMultipliers == monomial2.LetterMultipliers)
+            if (monomial1 != null || monomial2 != null)
             {
-                return true;
+                if (monomial1.LetterMultipliers == monomial2.LetterMultipliers)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Метод проверяющий подобные одночлены или нет.
+        /// </summary>
+        public bool IsSimilar(Monomial monomial)
+        {
+            if (monomial != null)
+            {
+                if (LetterMultipliers == monomial.LetterMultipliers)
+                {
+                    return true;
+                } 
             }
 
             return false;
