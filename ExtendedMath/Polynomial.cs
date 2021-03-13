@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ExtendedMath
 {
@@ -33,16 +34,65 @@ namespace ExtendedMath
 
             var newPolynomial = "";
 
-            var index = polynomial.IndexOf(")(") - 1;
+            var valueBetweenBrackets = string.Join("", Regex.Match(polynomial, @"\)\d*\w*").Value.Skip(1));
 
-            if (index != -2)
+            if (valueBetweenBrackets != "" &&!valueBetweenBrackets.Any(a => a == ')') && !valueBetweenBrackets.Any(a => a == '('))
             {
-                newPolynomial = polynomial.Substring(1, index);
+                var indexValueBetweenBrackets = polynomial.IndexOf(valueBetweenBrackets);
 
-                polynomial = polynomial.Replace(newPolynomial, RemovingBrackets(newPolynomial));
+                var newValue = polynomial.Substring(indexValueBetweenBrackets, valueBetweenBrackets.Length);
+
+                newValue += ')';
+
+                newValue = '(' + newValue;
+
+                polynomial = polynomial.Replace(valueBetweenBrackets, newValue);
             }
 
-            polynomial = RemovingBrackets(polynomial);
+            var index = polynomial.LastIndexOf(")(");
+
+            if (index != -1)
+            {
+                newPolynomial = polynomial.Substring(0, index + 1);
+
+                index = polynomial.LastIndexOf(")(");
+
+                if (!newPolynomial.Any(a => a == ')'))
+                {
+                    newPolynomial += ')';
+                }
+                if (!newPolynomial.Any(a => a == '('))
+                {
+                    newPolynomial = '(' + newPolynomial;
+                }
+
+                if (newPolynomial.LastIndexOf(")(") != -1)
+                {
+                    var newValue = RemovingBrackets(newPolynomial, true);
+
+                    polynomial = polynomial.Replace(newPolynomial, newValue);
+
+                    polynomial = polynomial.Insert(polynomial.IndexOf('('), ")");
+
+                    polynomial = '(' + polynomial;
+                }
+                else
+                {
+                    var newValue = RemovingBrackets(newPolynomial);
+
+                    polynomial = polynomial.Replace(newPolynomial, newValue);
+
+                    polynomial = polynomial.Insert(polynomial.IndexOf('('), ")");
+
+                    polynomial = '(' + polynomial;
+                }
+            }
+
+            do
+            {
+                polynomial = RemovingBrackets(polynomial);
+            }
+            while (polynomial.Any(a => a == ')') || polynomial.Any(a => a == '('));
 
             for (int i = 0; i < polynomial.Length; i++)
             {
@@ -96,9 +146,9 @@ namespace ExtendedMath
         /// <summary>
         /// Метод убирающий скобки.
         /// </summary>
-        private string RemovingBrackets(string polynomial)
+        private string RemovingBrackets(string polynomial, bool isMultiplication = false)
         {
-            for (int i = polynomial.Length - 1; i > 0; i--)
+            for (int i = polynomial.Length - 1; i >= 0; i--)
             {
                 if (i < polynomial.Length && polynomial[i] == '(')
                 {
@@ -112,7 +162,7 @@ namespace ExtendedMath
 
                     if (valueBeforeParentheses.Count == 0)
                     {
-                        valueBeforeParentheses.Add(new Monomial(""));
+                        valueBeforeParentheses.Add(new Monomial(1));
                     }
 
                     for (int k = 0; k < valueBeforeParentheses.Count; k++)
@@ -120,6 +170,8 @@ namespace ExtendedMath
                         var j = 0;
 
                         var stringNum = "";
+
+                        var multiplication = new Monomial(1);
 
                         Monomial newMonomial;
 
@@ -136,7 +188,16 @@ namespace ExtendedMath
                                     newPolynomial += "+";
                                 }
 
-                                newPolynomial += valueBeforeParentheses[k] * newMonomial;
+                                multiplication = (valueBeforeParentheses[k] * newMonomial);
+
+                                if (multiplication.Coefficient == 1 && multiplication.LetterMultipliers == "")
+                                {
+                                    newPolynomial += 1;
+                                }
+                                else
+                                {
+                                    newPolynomial += valueBeforeParentheses[k] * newMonomial;
+                                }
 
                                 stringNum = "";
                             }
@@ -149,7 +210,16 @@ namespace ExtendedMath
                                     newPolynomial += "+";
                                 }
 
-                                newPolynomial += valueBeforeParentheses[k] * newMonomial;
+                                multiplication = (valueBeforeParentheses[k] * newMonomial);
+
+                                if (multiplication.Coefficient == 1 && multiplication.LetterMultipliers == "")
+                                {
+                                    newPolynomial += 1;
+                                }
+                                else
+                                {
+                                    newPolynomial += valueBeforeParentheses[k] * newMonomial;
+                                }
 
                                 stringNum = "-";
                             }
@@ -166,7 +236,20 @@ namespace ExtendedMath
                             newPolynomial += "+";
                         }
 
-                        newPolynomial += valueBeforeParentheses[k] * newMonomial;
+                        multiplication = (valueBeforeParentheses[k] * newMonomial);
+
+                        if (multiplication.Coefficient == 1 && multiplication.LetterMultipliers == "")
+                        {
+                            newPolynomial += 1;
+                        }
+                        else if (multiplication.Coefficient == -1 && multiplication.LetterMultipliers == "")
+                        {
+                            newPolynomial += "-1";
+                        }
+                        else
+                        {
+                            newPolynomial += valueBeforeParentheses[k] * newMonomial;
+                        }
                     }
 
                     var _valueBeforeParentheses = "";
@@ -190,7 +273,22 @@ namespace ExtendedMath
 
                     if (newPolynomial[0] == '+')
                     {
-                        newPolynomial = newPolynomial.Remove(0, 1);
+                        var index = polynomial.IndexOf(_valueBeforeParentheses);
+
+                        if (index > 0 && polynomial[index - 1] != ')')
+                        {
+                            newPolynomial = newPolynomial.Remove(0, 1);
+                        }
+                        else if (index == 0)
+                        {
+                            newPolynomial = newPolynomial.Remove(0, 1);
+                        }
+                    }
+
+                    if (isMultiplication == true && polynomial.Replace(_valueBeforeParentheses + value, "").Any(a => a == ')'))
+                    {
+                        newPolynomial += ')';
+                        newPolynomial = '(' + newPolynomial;
                     }
 
                     // Раскрываем скобки.
@@ -212,7 +310,15 @@ namespace ExtendedMath
 
             monomials = new List<Monomial>();
 
-            if (polynomial[i] == ')')
+            if (i == -1)
+            {
+                monomials.Add(new Monomial(1));
+
+                result += '(';
+
+                i = 1;
+            }
+            else if (polynomial[i] == ')')
             {
                 monomials = PolynomialHandler(polynomial, ref i);
             }
@@ -332,7 +438,7 @@ namespace ExtendedMath
             {
                 for (; startIndex >= 0; startIndex--)
                 {
-                    if (line[startIndex] == '+' || line[startIndex] == '*' || line[startIndex] == '(') break;
+                    if (line[startIndex] == '+' || line[startIndex] == '*' || line[startIndex] == '(' || line[startIndex] == ')') break;
 
                     if (line[startIndex] == '-')
                     {

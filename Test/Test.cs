@@ -198,6 +198,18 @@ namespace Test
 
             Polynomial polynomial14 = new Polynomial("(-6x(-(9x^2 + 1) - x))(-5 - (7 + 1y))"); // => -648x^3 - 54x^3y - 72x - 6xy - 72x^2 - 6x^2y 
 
+            Polynomial polynomial15 = new Polynomial("(-6x((9x^2 + 1) - x))(-5 - (7 + 1y))"); // => 648x^3 + 54x^3y + 72x  + 6xy - 72x^2 - 6x^2y 
+
+            Polynomial polynomial16 = new Polynomial("7(9x^2 - x)(-5 - 7 + 1y)"); // => -756x^2 + 63x^2y + 84x - 7xy  
+
+            Polynomial polynomial17 = new Polynomial("(9x^2 - x)(7)(-5 - 7 + 1y)"); // => -756x^2 + 63x^2y + 84x - 7xy  
+
+            Polynomial polynomial18 = new Polynomial("(9x^2 - x)-7(-5 - 7 + 1y)"); // => 9x^2 - x + 84 - 7y
+
+            Polynomial polynomial19 = new Polynomial("(9x^2 - x)(9x^2 - x)(-5 - 7 + 1y)(-5 - 7 + 1y)"); // => 11664x^4 - 1944x^4y + 81x^4y^2 - 2592x^3 + 432x^3y - 18x^3y^2 + 144x^2 - 24x^2y + x^2y^2 
+
+            Polynomial polynomial20 = new Polynomial("(9x^2 - x)7 + 1(-5 - 7 + 1y)"); // => 63x^2 - 7x - 12 + y
+
 
 
             Console.WriteLine(polynomial1);
@@ -227,6 +239,18 @@ namespace Test
             Console.WriteLine(polynomial13);
 
             Console.WriteLine(polynomial14);
+
+            Console.WriteLine(polynomial15);
+
+            Console.WriteLine(polynomial16);
+
+            Console.WriteLine(polynomial17);
+
+            Console.WriteLine(polynomial18);
+
+            Console.WriteLine(polynomial19);
+
+            Console.WriteLine(polynomial20);
         }
 
         #endregion

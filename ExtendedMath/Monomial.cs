@@ -365,14 +365,14 @@ namespace ExtendedMath
 
         public static Monomial operator *(Monomial m1, Monomial m2)
         {
-            var result = new Monomial(Math.Round(m1.Coefficient * m2.Coefficient, 4));
+            Monomial result = new Monomial(Math.Round(m1.Coefficient * m2.Coefficient, 4));
 
             result.LetterMultipliers += ReverseDegreeFormat(m1.LetterMultipliers);
             result.LetterMultipliers += ReverseDegreeFormat(m2.LetterMultipliers);
 
             result.LetterMultipliers = DegreeFormat(result.LetterMultipliers);
 
-            return result;
+            return new Monomial($"{result.Coefficient}{result.LetterMultipliers}");
         }
 
         public static Monomial operator -(Monomial m1, Monomial m2)
